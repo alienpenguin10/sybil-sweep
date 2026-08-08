@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VITE_EXPLORER_URL: string;
   readonly VITE_SYBIL_REGISTRY: string;
   readonly VITE_SYBIL_AIRDROP: string;
+  readonly VITE_PROBE_WALLET: string;
 }
 
 interface ImportMeta {

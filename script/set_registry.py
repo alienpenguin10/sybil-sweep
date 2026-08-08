@@ -26,7 +26,7 @@ def main() -> int:
         print("Usage: python3 script/set_registry.py 0xRegistry [0xAirdrop]", file=sys.stderr)
         return 1
 
-    rpc = os.environ.get("MONAD_RPC", "https://testnet-rpc.monad.xyz")
+    rpc = os.environ.get("MONAD_RPC", "https://10143.rpc.thirdweb.com")
     explorer = os.environ.get("MONAD_EXPLORER", "https://testnet.monadvision.com")
     chain_id = os.environ.get("CHAIN_ID", "10143")
 
