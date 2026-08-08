@@ -1,5 +1,5 @@
 window.SYBIL_GRAPH = {
-  "generatedAt": 1786194482,
+  "generatedAt": 1786194830,
   "metrics": {
     "claimants": 93,
     "farms_truth": 46,
@@ -19,7 +19,8 @@ window.SYBIL_GRAPH = {
       "confidenceBps": 10000,
       "funder": "0xa528f53936e975133dc2757476f5d212bdb904ca",
       "fundingWindowSecs": 45,
-      "evidenceHash": "0x69c7e45a8f5c8b4613877129883b0956e5004c79f152cc8a0b0fb5b95d6d40ac"
+      "evidenceHash": "0x69c7e45a8f5c8b4613877129883b0956e5004c79f152cc8a0b0fb5b95d6d40ac",
+      "sampleMember": "0x00005bcdbea82c9dad7f140fec66bd9fb0e80de5"
     },
     {
       "clusterId": 1,
@@ -28,7 +29,8 @@ window.SYBIL_GRAPH = {
       "confidenceBps": 9000,
       "funder": "0x0000000000000000000000000000000000000000",
       "fundingWindowSecs": 26,
-      "evidenceHash": "0xb9508648abc9ff18f507cd8aa9a12d6fe0f0a6b58484f380eda3711afc95c781"
+      "evidenceHash": "0xb9508648abc9ff18f507cd8aa9a12d6fe0f0a6b58484f380eda3711afc95c781",
+      "sampleMember": "0x0cd09f36ea5eeeecc967eeb20ef4177bdb2f2215"
     }
   ],
   "nodes": [

@@ -1,26 +1,23 @@
 # Progress — Sybil Sweep
 
 ## What works
-- [x] GitHub repo cloned locally (`main`)
-- [x] Memory Bank + `.cursorrules` initialized
-- [x] `sybil_detector.py` — demo dataset, union-find, scoring, emits graph + attestations
-- [x] Demo metrics tuned: **95.7% recall** (40 red + 4 amber suspects; 2 soft FN)
-- [x] `SybilRegistry.sol` + demo `Airdrop.sol` — compile clean under Foundry
-- [x] Offline `dashboard.html` (canvas force-graph)
-- [x] `seed_patterns.md` fraud-signature menu
-- [x] Foundry installed (`forge` 1.7.1); `forge-std` vendored; `Deploy`/`Attest` scripts
-- [x] `script/attest.py` dry-run against `attestations.json`
+- [x] GitHub repo + Memory Bank
+- [x] Detector (~95.7% recall) → `graph_data.js` + `attestations.json`
+- [x] `SybilRegistry.sol` + `Airdrop.sol` compile
+- [x] Foundry scripts: Deploy (fund+0.01 claim), AttestOne, attest.py
+- [x] Naming trap fixed: `AttestOne.s.sol:AttestOne` vs `python3 script/attest.py`
+- [x] forge-std missing-dep called out in README (`lib/` gitignored)
+- [x] Amin seam (offline): projector dashboard, Enforce panel, demo.sh
 
 ## What's left
-- [ ] Faucet MON + MetaMask on Monad testnet (10143)
-- [ ] Deploy registry + airdrop; prove `requireHuman` reject live (critical path)
-- [ ] Broadcast real clusters via `python3 script/attest.py`
-- [ ] Projector polish + 30s backup video
-- [ ] Push scaffold to GitHub when team agrees
+- [ ] Faucet MON + MetaMask on Monad testnet (10143) — **Varnie**
+- [ ] Deploy → AttestOne → sybil revert + honest payout on explorer — **Varnie**
+- [ ] `set_registry.py` + `attest.py` full publish + dashboard R — **Amin**
+- [ ] 30s backup video of full flow
 - [ ] (Stretch) spawn-40 live farm
 
 ## Known issues / risks
-- Venue wifi — keep dashboard offline; hotspot + backup video
-- Faucet rate limits — get MON early
-- `lib/forge-std` is vendored for offline builds; teammates can also `git clone` it into `lib/`
+- Fresh clone: `forge build` fails until `git clone ... forge-std lib/forge-std`
+- Venue wifi — dashboard offline; `forceOffline: true` in config.js if RPC dies
+- Faucet rate limits — get MON early; Deploy needs ≥0.1 MON for airdrop fund
 - Do not commit `.env` / private keys
