@@ -23,7 +23,8 @@ export default function App() {
   const airdrop = getAirdropAddress();
 
   useEffect(() => {
-    fetch("/graph_data.json")
+    const graphUrl = `${import.meta.env.BASE_URL}graph_data.json`;
+    fetch(graphUrl)
       .then(async (r) => {
         if (!r.ok) throw new Error(`graph_data.json HTTP ${r.status}`);
         return r.json() as Promise<GraphPayload>;
@@ -222,7 +223,12 @@ export default function App() {
               <a className="linkbtn" href={explorerHref} target="_blank" rel="noreferrer">
                 Explorer
               </a>
-              <a className="linkbtn" href="/fallback.html" target="_blank" rel="noreferrer">
+              <a
+                className="linkbtn"
+                href={`${import.meta.env.BASE_URL}fallback.html`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 HTML fallback
               </a>
             </div>
