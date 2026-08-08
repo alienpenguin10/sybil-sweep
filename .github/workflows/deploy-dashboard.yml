@@ -2,7 +2,7 @@ name: Deploy dashboard to GitHub Pages
 
 on:
   push:
-    branches: [main, amin/murtuza-folder-layout]
+    branches: [main]
     paths:
       - "dashboard/**"
       - "detector/**"
