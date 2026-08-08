@@ -1,13 +1,10 @@
-// Sybil Sweep — shared chain config for React/viem + legacy HTML fallback.
-// React app should mirror these via Vite env (VITE_SYBIL_REGISTRY, etc.).
+// Sybil Sweep — HTML fallback config (React uses dashboard/.env via Vite).
 window.SYBIL_CONFIG = {
   chainId: 10143,
   chainName: "Monad Testnet",
-  rpcUrl: "https://testnet-rpc.monad.xyz",
+  rpcUrl: "https://10143.rpc.thirdweb.com",
   explorerUrl: "https://testnet.monadvision.com",
-  // Set these once deploy lands (or via script/set_registry.py):
-  registry: "", // e.g. "0xabc..."
-  airdrop: "", // e.g. "0xdef..."
-  // HTML fallback only: skip RPC if venue wifi dies mid-demo
+  registry: "0x1D582E8d297d47273B64B80BD93c159513FD97D9",
+  airdrop: "0x290fbF9fb7e06dF88A8C14546939db476888d9C4",
   forceOffline: false,
 };
