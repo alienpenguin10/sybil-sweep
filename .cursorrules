@@ -4,9 +4,14 @@
 Enforce on-chain. Graph is evidence. Do not pitch as wallet viz or agent firewall.
 
 ## Critical path order
-1. Deploy SybilRegistry + Airdrop → reject one hardcoded wallet
-2. attestations.json → attestCluster for real clusters
+1. Deploy SybilRegistry + Airdrop (funds 0.1, claim 0.01) → AttestOne one wallet → reject + human payout
+2. python3 script/attest.py for full clusters (NOT the Solidity AttestOne file)
 3. Stretch spawn-40 only if #1–2 solid by ~5pm
+
+## Attest naming (do not confuse)
+- Smoke: `forge script script/AttestOne.s.sol:AttestOne --broadcast`
+- Full dump: `python3 script/attest.py`
+- Fresh clone needs: `git clone --depth 1 https://github.com/foundry-rs/forge-std lib/forge-std`
 
 ## Code laws
 - Detector: Python stdlib only (no pip) unless team explicitly agrees

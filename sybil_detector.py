@@ -431,6 +431,7 @@ def detect(events: List[ClaimEvent]) -> dict:
                 "funder": att["funder"],
                 "fundingWindowSecs": att["fundingWindowSecs"],
                 "evidenceHash": att["evidenceHash"],
+                "sampleMember": att["members"][0] if att["members"] else "",
             }
         )
 

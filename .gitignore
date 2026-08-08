@@ -9,6 +9,9 @@ lib/
 .env.*
 !.env.example
 
+# Local publish receipts (optional)
+onchain_status.json
+
 # OS / editor
 .DS_Store
 .idea/

@@ -1,26 +1,26 @@
 # Active Context — Sybil Sweep
 
 ## Current focus
-Scaffold is ready. **Next: on-chain critical path** — deploy `SybilRegistry` +
-`Airdrop`, attest one wallet, prove `claim()` reverts on Monad testnet explorer.
+**Varnie critical path is documented and de-snagged.** Deploy funds airdrop + sets
+0.01 claim; AttestOne file/contract names align; forge-std clone called out.
 
 ## Recent changes
-- Cloned https://github.com/alienpenguin10/sybil-sweep.git (was README-only)
-- Built Memory Bank, detector, contracts, dashboard, Foundry scripts
-- Foundry 1.7.1 installed; contracts compile
-- Detector demo: ~96% recall with hard cases (honest friends stay blue; soft FN wallets)
+- Renamed `script/Attest.s.sol` → `script/AttestOne.s.sol` (contract `AttestOne`)
+- `Deploy.s.sol`: `setClaimAmount(0.01 ether)` + `fund{value: 0.1 ether}()`
+- `.env.example`: `SYBIL_AIRDROP` + correct AttestOne / attest.py split
+- README critical path rewritten for Varnie
 
-## Next steps (build order)
-1. Varnie: faucet MON → deploy → AttestOne / cast → claim revert
-2. Amin: wire explorer links / projector; run `attest.py` for full clusters
-3. Murtuza: harden seed patterns / pitch
-4. Stretch spawn-40 only if #1–2 green by ~5pm
+## Attest path cheat-sheet
+```bash
+forge script script/AttestOne.s.sol:AttestOne --rpc-url $MONAD_RPC --broadcast   # one wallet
+python3 script/attest.py                                                         # full dump
+```
 
-## Active decisions
-- Detector stays stdlib-only; SHA-256 evidence hash
-- Offline dashboard (no CDN)
-- Foundry primary; Remix backup for fastest first deploy
+## Next steps
+1. Varnie: faucet → Deploy → AttestOne → sybil revert + human payout on explorer
+2. Amin: `set_registry.py` + full `attest.py` + dashboard R
+3. Murtuza: pitch open/close
+4. Stretch spawn-40 only if enforce is green
 
 ## Open questions
 - Who holds deploy key / has faucet MON?
-- Push this scaffold to origin now or after first successful deploy?

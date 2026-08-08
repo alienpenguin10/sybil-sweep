@@ -4,9 +4,10 @@ pragma solidity ^0.8.24;
 import {Script, console2} from "forge-std/Script.sol";
 import {SybilRegistry} from "../contracts/SybilRegistry.sol";
 
-/// @notice Publish clusters from attestations.json (pass via env / manual encode).
-/// @dev For hackathon speed: use AttestOne for critical-path reject, then this for full dump.
-///      Full JSON parsing on-chain scripts is awkward — see script/attest.py helper.
+/// @notice Critical-path smoke: tag ONE wallet so Airdrop.claim() reverts via requireHuman.
+/// @dev Full cluster dump is NOT here — use `python3 script/attest.py` after reject is proven.
+///
+///   forge script script/AttestOne.s.sol:AttestOne --rpc-url $MONAD_RPC --broadcast
 contract AttestOne is Script {
     function run() external {
         uint256 pk = vm.envUint("PRIVATE_KEY");

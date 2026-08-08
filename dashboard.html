@@ -6,96 +6,187 @@
   <title>Sybil Sweep</title>
   <style>
     :root {
-      --bg0: #0b1220;
-      --bg1: #121a2b;
-      --ink: #e8eefc;
-      --muted: #8b9bb8;
+      --bg0: #070b14;
+      --bg1: #101827;
+      --ink: #f1f5ff;
+      --muted: #93a4c3;
       --blue: #3b82f6;
       --red: #ef4444;
       --amber: #f59e0b;
-      --line: rgba(255,255,255,0.08);
+      --ok: #34d399;
+      --line: rgba(255,255,255,0.09);
       --accent: #22d3ee;
+      --panel: rgba(8,12,22,0.72);
     }
     * { box-sizing: border-box; }
     html, body {
       margin: 0; height: 100%;
       background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(34,211,238,0.12), transparent 55%),
-        radial-gradient(900px 500px at 90% 0%, rgba(239,68,68,0.10), transparent 50%),
+        radial-gradient(1100px 520px at 8% -8%, rgba(34,211,238,0.14), transparent 55%),
+        radial-gradient(900px 480px at 92% 0%, rgba(239,68,68,0.12), transparent 50%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
       color: var(--ink);
-      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
     }
     header {
-      display: flex; align-items: baseline; gap: 1rem;
-      padding: 1rem 1.25rem 0.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      padding: 0.85rem 1.2rem;
       border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,0.25);
     }
+    .brand { display: flex; align-items: baseline; gap: 0.85rem; }
     header h1 {
-      margin: 0; font-size: 1.55rem; letter-spacing: -0.02em;
+      margin: 0; font-size: clamp(1.6rem, 2.6vw, 2.1rem); letter-spacing: -0.03em;
       font-family: "IBM Plex Mono", "SF Mono", Menlo, monospace;
     }
     header h1 span { color: var(--accent); }
-    header p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .tagline { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .tagline strong { color: var(--ink); }
+    .beats {
+      display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;
+      font-family: "IBM Plex Mono", Menlo, monospace; font-size: 0.72rem;
+    }
+    .beat {
+      padding: 0.28rem 0.55rem; border: 1px solid var(--line);
+      color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .beat.on { color: var(--ink); border-color: rgba(34,211,238,0.45); background: rgba(34,211,238,0.08); }
+    .beat.done { color: var(--ok); border-color: rgba(52,211,153,0.35); }
     .layout {
       display: grid;
-      grid-template-columns: 1fr 320px;
-      height: calc(100% - 64px);
+      grid-template-columns: 1fr minmax(300px, 360px);
+      height: calc(100% - 62px);
     }
-    #stage { position: relative; min-width: 0; }
+    #stage { position: relative; min-width: 0; overflow: hidden; }
     canvas { width: 100%; height: 100%; display: block; }
     aside {
       border-left: 1px solid var(--line);
-      padding: 0.85rem;
+      padding: 0.9rem;
       overflow: auto;
-      background: rgba(0,0,0,0.18);
+      background: var(--panel);
     }
     .metrics {
       display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
-      margin-bottom: 0.9rem;
+      margin-bottom: 0.75rem;
     }
     .metric {
-      padding: 0.65rem 0.7rem;
+      padding: 0.7rem 0.75rem;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.02);
     }
-    .metric b { display: block; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
-    .metric span { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .legend { display: flex; gap: 0.85rem; margin: 0 0 0.85rem; font-size: 0.8rem; color: var(--muted); }
-    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 0.35rem; }
+    .metric.hero {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(239,68,68,0.16), rgba(34,211,238,0.06));
+      border-color: rgba(239,68,68,0.28);
+    }
+    .metric b {
+      display: block; font-size: 1.35rem; font-variant-numeric: tabular-nums;
+      font-family: "IBM Plex Mono", Menlo, monospace;
+    }
+    .metric.hero b { font-size: 2rem; color: #fecaca; }
+    .metric span {
+      color: var(--muted); font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .legend {
+      display: flex; gap: 0.85rem; margin: 0 0 0.85rem;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      display: inline-block; margin-right: 0.35rem;
+    }
     .dot.red { background: var(--red); box-shadow: 0 0 10px rgba(239,68,68,0.55); }
     .dot.blue { background: var(--blue); }
     .dot.amber { background: var(--amber); }
-    h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0.4rem 0 0.55rem; }
+    h2 {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em;
+      color: var(--muted); margin: 0.55rem 0 0.5rem;
+    }
+    .enforce {
+      border: 1px solid rgba(34,211,238,0.28);
+      background: linear-gradient(160deg, rgba(34,211,238,0.1), transparent 70%);
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .enforce .status {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      margin-bottom: 0.45rem;
+    }
+    .pill {
+      font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.2rem 0.45rem; border: 1px solid var(--line); color: var(--muted);
+      font-family: "IBM Plex Mono", Menlo, monospace;
+    }
+    .pill.live { color: var(--ok); border-color: rgba(52,211,153,0.45); }
+    .pill.wait { color: var(--amber); border-color: rgba(245,158,11,0.45); }
+    .pill.off { color: var(--muted); }
+    .enforce .line { font-size: 0.8rem; color: var(--muted); line-height: 1.45; word-break: break-all; }
+    .enforce .line b { color: var(--ink); font-weight: 600; }
+    .probe {
+      margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px solid var(--line);
+      font-size: 0.8rem;
+    }
+    .probe .verdict-ok { color: var(--ok); font-weight: 700; }
+    .probe .verdict-sybil { color: var(--red); font-weight: 700; }
+    .btnrow { display: flex; gap: 0.4rem; margin-top: 0.55rem; flex-wrap: wrap; }
+    button, .linkbtn {
+      appearance: none; border: 1px solid var(--line); background: rgba(255,255,255,0.03);
+      color: var(--ink); font: inherit; font-size: 0.75rem; padding: 0.4rem 0.55rem; cursor: pointer;
+      text-decoration: none;
+    }
+    button:hover, .linkbtn:hover { border-color: rgba(34,211,238,0.5); }
     .card {
       border: 1px solid var(--line);
       padding: 0.7rem 0.75rem;
       margin-bottom: 0.55rem;
-      background: linear-gradient(135deg, rgba(239,68,68,0.08), transparent 60%);
+      background: linear-gradient(135deg, rgba(239,68,68,0.1), transparent 60%);
     }
-    .card strong { display: block; margin-bottom: 0.25rem; }
+    .card strong { display: block; margin-bottom: 0.25rem; font-size: 0.95rem; }
     .card .row { color: var(--muted); font-size: 0.78rem; line-height: 1.45; word-break: break-all; }
-    .conf { color: var(--red); font-weight: 600; }
-    footer {
-      position: absolute; left: 1rem; bottom: 0.75rem;
-      color: var(--muted); font-size: 0.75rem;
+    .conf { color: #fca5a5; font-weight: 700; }
+    .hud {
+      position: absolute; left: 1rem; top: 1rem;
       pointer-events: none;
+      font-family: "IBM Plex Mono", Menlo, monospace;
+      font-size: clamp(1.1rem, 2vw, 1.55rem);
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.65);
+    }
+    .hud .sub { display: block; margin-top: 0.2rem; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+    footer {
+      position: absolute; left: 1rem; right: 1rem; bottom: 0.75rem;
+      display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      color: var(--muted); font-size: 0.75rem; pointer-events: none;
     }
     @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; grid-template-rows: 55vh 1fr; }
+      .layout { grid-template-columns: 1fr; grid-template-rows: 52vh 1fr; }
       aside { border-left: 0; border-top: 1px solid var(--line); }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Sybil <span>Sweep</span></h1>
-    <p>Detect → show → <strong style="color:var(--ink)">enforce</strong> on Monad</p>
+    <div class="brand">
+      <h1>Sybil <span>Sweep</span></h1>
+      <p class="tagline">Detect → show → <strong>enforce</strong></p>
+    </div>
+    <div class="beats" id="beats">
+      <span class="beat" data-beat="1">1 input</span>
+      <span class="beat" data-beat="2">2 detect</span>
+      <span class="beat" data-beat="3">3 show</span>
+      <span class="beat" data-beat="4">4 enforce</span>
+    </div>
   </header>
   <div class="layout">
     <div id="stage">
+      <div class="hud" id="hud"></div>
       <canvas id="g"></canvas>
-      <footer id="foot">Loading graph_data.js…</footer>
+      <footer>
+        <span id="foot">Loading…</span>
+        <span>keys: 1–4 demo beats · R re-probe</span>
+      </footer>
     </div>
     <aside>
       <div class="metrics" id="metrics"></div>
@@ -104,136 +195,303 @@
         <span><i class="dot blue"></i>human</span>
         <span><i class="dot amber"></i>suspect</span>
       </div>
-      <h2>Attested clusters</h2>
+
+      <h2>Enforce on Monad</h2>
+      <div class="enforce" id="enforce">
+        <div class="status">
+          <b>Registry</b>
+          <span class="pill off" id="regPill">offline</span>
+        </div>
+        <div class="line" id="regLine">Paste registry into <b>config.js</b> after deploy.</div>
+        <div class="probe" id="probe">
+          Probe wallet not ready.
+        </div>
+        <div class="btnrow">
+          <button type="button" id="btnProbe">Re-probe chain</button>
+          <a class="linkbtn" id="btnExplorer" href="#" target="_blank" rel="noreferrer">Explorer</a>
+        </div>
+      </div>
+
+      <h2>Clusters ready to attest</h2>
       <div id="cards"></div>
     </aside>
   </div>
+
+  <script src="config.js"></script>
   <script src="graph_data.js"></script>
-  <div id="boot"></div>
   <script>
     (function () {
       const data = window.SYBIL_GRAPH;
+      const cfg = window.SYBIL_CONFIG || {};
       const foot = document.getElementById("foot");
       const metricsEl = document.getElementById("metrics");
       const cardsEl = document.getElementById("cards");
+      const hud = document.getElementById("hud");
+      const regPill = document.getElementById("regPill");
+      const regLine = document.getElementById("regLine");
+      const probeEl = document.getElementById("probe");
+      const btnProbe = document.getElementById("btnProbe");
+      const btnExplorer = document.getElementById("btnExplorer");
+
       if (!data) {
         foot.textContent = "Missing graph_data.js — run: python3 sybil_detector.py";
         return;
       }
 
       const m = data.metrics || {};
+      const recallPct = m.recall != null ? (m.recall * 100).toFixed(1) + "%" : "—";
       metricsEl.innerHTML = [
-        ["Claimants", m.claimants ?? "—"],
-        ["Flagged", m.flagged ?? "—"],
-        ["Precision", m.precision != null ? (m.precision * 100).toFixed(1) + "%" : "—"],
-        ["Recall", m.recall != null ? (m.recall * 100).toFixed(1) + "%" : "—"],
-      ].map(([k, v]) => `<div class="metric"><span>${k}</span><b>${v}</b></div>`).join("");
+        ["Recall", recallPct, true],
+        ["Claimants", m.claimants ?? "—", false],
+        ["Flagged farms", m.flagged ?? "—", false],
+        ["Precision", m.precision != null ? (m.precision * 100).toFixed(1) + "%" : "—", false],
+      ].map(([k, v, hero]) =>
+        `<div class="metric${hero ? " hero" : ""}"><span>${k}</span><b>${v}</b></div>`
+      ).join("");
 
-      (data.clusters || []).forEach((c) => {
+      hud.innerHTML = `${m.claimants || "—"} claimants<span class="sub">${m.flagged || 0} farm wallets · ${recallPct} recall</span>`;
+
+      const clusters = data.clusters || [];
+      clusters.forEach((c) => {
         const conf = (c.confidenceBps / 100).toFixed(1);
-        const funder = (c.funder || "").slice(0, 10) + "…" + (c.funder || "").slice(-4);
+        const funder = short(c.funder);
         cardsEl.innerHTML += `
           <div class="card">
             <strong>Cluster #${c.onchainClusterId} · <span class="conf">${conf}%</span></strong>
-            <div class="row">${c.size} wallets · window ${c.fundingWindowSecs}s</div>
+            <div class="row">${c.size} wallets · funding window ${c.fundingWindowSecs}s</div>
             <div class="row">funder ${funder}</div>
+            <div class="row">evidence ${short(c.evidenceHash, 10, 8)}</div>
           </div>`;
       });
-      if (!(data.clusters || []).length) {
+      if (!clusters.length) {
         cardsEl.innerHTML = `<div class="row" style="color:var(--muted)">No clusters above risk floor.</div>`;
       }
 
-      foot.textContent = `${(data.nodes || []).length} nodes · ${(data.links || []).length} edges · offline demo`;
+      // Sample farm wallet for live probe (from detector sampleMember)
+      const probeWallet =
+        (clusters[0] && clusters[0].sampleMember) ||
+        ((data.nodes || []).find((n) => n.cluster === 0 && !n.isFunder) || {}).id ||
+        null;
 
-      // --- Force graph (no deps) ---
-      const canvas = document.getElementById("g");
-      const ctx = canvas.getContext("2d");
-      const stage = document.getElementById("stage");
+      const explorerBase = (cfg.explorerUrl || "https://testnet.monadvision.com").replace(/\/$/, "");
+      btnExplorer.href = cfg.registry
+        ? `${explorerBase}/address/${cfg.registry}`
+        : explorerBase;
 
-      const nodes = (data.nodes || []).map((n, i) => ({
-        ...n,
-        x: Math.cos(i) * 180 + 400,
-        y: Math.sin(i * 1.7) * 140 + 300,
-        vx: 0,
-        vy: 0,
-      }));
-      const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
-      const links = (data.links || [])
-        .map((l) => ({ ...l, s: byId[l.source], t: byId[l.target] }))
-        .filter((l) => l.s && l.t);
+      setBeat(3);
+      foot.textContent = `${(data.nodes || []).length} nodes · ${(data.links || []).length} edges · projector mode`;
 
-      // Pull same-cluster nodes together
-      function tick() {
-        const n = nodes.length;
-        for (let i = 0; i < n; i++) {
-          for (let j = i + 1; j < n; j++) {
-            const a = nodes[i], b = nodes[j];
-            let dx = a.x - b.x, dy = a.y - b.y;
-            let dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
-            let force = 400 / (dist * dist);
-            if (a.cluster >= 0 && a.cluster === b.cluster) force *= 0.15;
-            let fx = (dx / dist) * force;
-            let fy = (dy / dist) * force;
-            a.vx += fx; a.vy += fy;
-            b.vx -= fx; b.vy -= fy;
+      async function refreshEnforce() {
+        const registry = (cfg.registry || "").trim();
+        const offline = !!cfg.forceOffline || !registry;
+
+        if (offline) {
+          regPill.textContent = "pending deploy";
+          regPill.className = "pill wait";
+          regLine.innerHTML = registry
+            ? `Registry set but <b>forceOffline</b> is on.`
+            : `Off-chain verdict ready · <b>${clusters.length}</b> cluster(s) in attestations.json<br/>Waiting for Varnie deploy → paste address into config.js`;
+          if (probeWallet) {
+            probeEl.innerHTML = `Would block <code>${short(probeWallet)}</code> via <b>requireHuman()</b> after attest.`;
+          }
+          return;
+        }
+
+        regPill.textContent = "probing…";
+        regPill.className = "pill wait";
+        regLine.innerHTML = `Registry <b>${short(registry)}</b> · chain ${cfg.chainId || 10143}`;
+
+        try {
+          const threshold = await ethCallUint(registry, "0xc1144b71"); // thresholdBps()
+          let sybil = null;
+          let risk = null;
+          if (probeWallet) {
+            sybil = await ethCallBool(registry, encodeIsSybil(probeWallet));
+            risk = await ethCallUint(registry, encodeRisk(probeWallet));
+          }
+          regPill.textContent = "live on monad";
+          regPill.className = "pill live";
+          setBeat(4);
+          const thr = (Number(threshold) / 100).toFixed(0);
+          if (probeWallet && sybil !== null) {
+            const label = sybil
+              ? `<span class="verdict-sybil">SYBIL · blocked</span>`
+              : `<span class="verdict-ok">not flagged yet</span>`;
+            probeEl.innerHTML =
+              `Probe ${short(probeWallet)} → ${label}` +
+              (risk != null ? ` · risk ${(Number(risk) / 100).toFixed(1)}%` : "") +
+              `<br/><span style="color:var(--muted)">threshold ${thr}% · airdrop calls requireHuman(msg.sender)</span>`;
+          } else {
+            probeEl.innerHTML = `Connected · threshold ${thr}%. Attest clusters, then re-probe.`;
+          }
+          btnExplorer.href = `${explorerBase}/address/${registry}`;
+        } catch (err) {
+          regPill.textContent = "rpc offline";
+          regPill.className = "pill wait";
+          regLine.innerHTML = `Could not reach RPC. Showing offline story.<br/><span style="color:var(--muted)">${escapeHtml(String(err.message || err))}</span>`;
+          if (probeWallet) {
+            probeEl.innerHTML = `Backup: farm wallet <code>${short(probeWallet)}</code> is in attestations.json ready to publish.`;
           }
         }
-        for (const l of links) {
-          let dx = l.t.x - l.s.x, dy = l.t.y - l.s.y;
-          let dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
-          const target = l.kind === "funding" ? 70 : 36;
-          let f = (dist - target) * 0.01;
-          let fx = (dx / dist) * f, fy = (dy / dist) * f;
-          l.s.vx += fx; l.s.vy += fy;
-          l.t.vx -= fx; l.t.vy -= fy;
-        }
-        const cx = canvas.width / (2 * (window.devicePixelRatio || 1));
-        const cy = canvas.height / (2 * (window.devicePixelRatio || 1));
-        for (const n of nodes) {
-          n.vx += (cx - n.x) * 0.002;
-          n.vy += (cy - n.y) * 0.002;
-          n.vx *= 0.85; n.vy *= 0.85;
-          n.x += n.vx; n.y += n.vy;
-        }
       }
 
-      function color(n) {
-        if (n.suspect) return "#f59e0b";
-        if (n.cluster >= 0) return "#ef4444";
-        if (n.isFunder) return "#64748b";
-        return "#3b82f6";
+      btnProbe.addEventListener("click", () => refreshEnforce());
+      window.addEventListener("keydown", (e) => {
+        if (e.key >= "1" && e.key <= "4") setBeat(Number(e.key));
+        if (e.key === "r" || e.key === "R") refreshEnforce();
+      });
+
+      refreshEnforce();
+      startGraph(data);
+
+      // --- helpers ---
+      function setBeat(n) {
+        document.querySelectorAll(".beat").forEach((el) => {
+          const b = Number(el.getAttribute("data-beat"));
+          el.classList.toggle("on", b === n);
+          el.classList.toggle("done", b < n);
+        });
       }
 
-      function draw() {
-        const dpr = window.devicePixelRatio || 1;
-        const w = stage.clientWidth, h = stage.clientHeight;
-        canvas.width = w * dpr; canvas.height = h * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.clearRect(0, 0, w, h);
-
-        for (let i = 0; i < 2; i++) tick();
-
-        ctx.lineWidth = 1;
-        for (const l of links) {
-          const farm = l.s.cluster >= 0 && l.t.cluster >= 0;
-          ctx.strokeStyle = farm ? "rgba(239,68,68,0.35)" : "rgba(59,130,246,0.12)";
-          ctx.beginPath();
-          ctx.moveTo(l.s.x, l.s.y);
-          ctx.lineTo(l.t.x, l.t.y);
-          ctx.stroke();
-        }
-        for (const n of nodes) {
-          const r = n.isFunder ? 3.5 : n.cluster >= 0 ? 5.5 : 4;
-          ctx.beginPath();
-          ctx.fillStyle = color(n);
-          ctx.globalAlpha = n.isFunder ? 0.55 : 0.95;
-          ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
-        requestAnimationFrame(draw);
+      function short(a, head = 6, tail = 4) {
+        if (!a) return "—";
+        const s = String(a);
+        if (s.length <= head + tail + 1) return s;
+        return s.slice(0, head) + "…" + s.slice(-tail);
       }
-      draw();
+
+      function escapeHtml(s) {
+        return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      }
+
+      function padAddr(addr) {
+        return addr.toLowerCase().replace(/^0x/, "").padStart(64, "0");
+      }
+
+      function encodeIsSybil(addr) {
+        return "0x4fa6ea73" + padAddr(addr);
+      }
+      function encodeRisk(addr) {
+        return "0x680dc72f" + padAddr(addr);
+      }
+
+      async function ethCall(to, dataHex) {
+        const body = {
+          jsonrpc: "2.0",
+          id: 1,
+          method: "eth_call",
+          params: [{ to, data: dataHex }, "latest"],
+        };
+        const res = await fetch(cfg.rpcUrl || "https://testnet-rpc.monad.xyz", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) throw new Error("RPC HTTP " + res.status);
+        const j = await res.json();
+        if (j.error) throw new Error(j.error.message || "RPC error");
+        return j.result;
+      }
+
+      async function ethCallUint(to, dataHex) {
+        const r = await ethCall(to, dataHex);
+        return BigInt(r || "0x0");
+      }
+
+      async function ethCallBool(to, dataHex) {
+        const r = await ethCallUint(to, dataHex);
+        return r !== 0n;
+      }
+
+      function startGraph(data) {
+        const canvas = document.getElementById("g");
+        const ctx = canvas.getContext("2d");
+        const stage = document.getElementById("stage");
+
+        const nodes = (data.nodes || []).map((n, i) => ({
+          ...n,
+          x: Math.cos(i * 0.7) * 200 + 420,
+          y: Math.sin(i * 1.3) * 160 + 300,
+          vx: 0,
+          vy: 0,
+        }));
+        const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
+        const links = (data.links || [])
+          .map((l) => ({ ...l, s: byId[l.source], t: byId[l.target] }))
+          .filter((l) => l.s && l.t);
+
+        function tick() {
+          const n = nodes.length;
+          for (let i = 0; i < n; i++) {
+            for (let j = i + 1; j < n; j++) {
+              const a = nodes[i], b = nodes[j];
+              let dx = a.x - b.x, dy = a.y - b.y;
+              let dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+              let force = 420 / (dist * dist);
+              if (a.cluster >= 0 && a.cluster === b.cluster) force *= 0.12;
+              a.vx += (dx / dist) * force;
+              a.vy += (dy / dist) * force;
+              b.vx -= (dx / dist) * force;
+              b.vy -= (dy / dist) * force;
+            }
+          }
+          for (const l of links) {
+            let dx = l.t.x - l.s.x, dy = l.t.y - l.s.y;
+            let dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+            const target = l.kind === "funding" ? 72 : 34;
+            let f = (dist - target) * 0.012;
+            l.s.vx += (dx / dist) * f;
+            l.s.vy += (dy / dist) * f;
+            l.t.vx -= (dx / dist) * f;
+            l.t.vy -= (dy / dist) * f;
+          }
+          const cx = canvas.width / (2 * (window.devicePixelRatio || 1));
+          const cy = canvas.height / (2 * (window.devicePixelRatio || 1));
+          for (const n of nodes) {
+            n.vx += (cx - n.x) * 0.0022;
+            n.vy += (cy - n.y) * 0.0022;
+            n.vx *= 0.86; n.vy *= 0.86;
+            n.x += n.vx; n.y += n.vy;
+          }
+        }
+
+        function color(n) {
+          if (n.suspect) return "#f59e0b";
+          if (n.cluster >= 0) return "#ef4444";
+          if (n.isFunder) return "#64748b";
+          return "#3b82f6";
+        }
+
+        function draw() {
+          const dpr = window.devicePixelRatio || 1;
+          const w = stage.clientWidth, h = stage.clientHeight;
+          canvas.width = w * dpr; canvas.height = h * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.clearRect(0, 0, w, h);
+          for (let i = 0; i < 2; i++) tick();
+
+          for (const l of links) {
+            const farm = l.s.cluster >= 0 && l.t.cluster >= 0;
+            ctx.strokeStyle = farm ? "rgba(239,68,68,0.38)" : "rgba(59,130,246,0.12)";
+            ctx.lineWidth = farm ? 1.25 : 1;
+            ctx.beginPath();
+            ctx.moveTo(l.s.x, l.s.y);
+            ctx.lineTo(l.t.x, l.t.y);
+            ctx.stroke();
+          }
+          for (const n of nodes) {
+            const r = n.isFunder ? 3.2 : n.cluster >= 0 ? 5.8 : 4;
+            ctx.beginPath();
+            ctx.fillStyle = color(n);
+            ctx.globalAlpha = n.isFunder ? 0.5 : 0.95;
+            ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+          requestAnimationFrame(draw);
+        }
+        draw();
+      }
     })();
   </script>
 </body>
