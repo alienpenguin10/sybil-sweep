@@ -10,6 +10,7 @@ lib/
 !.env.example
 
 # Local publish receipts (optional)
+data/onchain_status.json
 onchain_status.json
 
 # OS / editor

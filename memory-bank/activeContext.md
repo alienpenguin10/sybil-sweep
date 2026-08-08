@@ -1,26 +1,30 @@
 # Active Context — Sybil Sweep
 
 ## Current focus
-**Varnie critical path is documented and de-snagged.** Deploy funds airdrop + sets
-0.01 claim; AttestOne file/contract names align; forge-std clone called out.
+Docs + architecture updated: **dashboard is React + viem**. Legacy
+`dashboard/dashboard.html` remains a projector/wifi fallback only.
+Folder ownership still applies for conflict-free parallel work.
 
-## Recent changes
-- Renamed `script/Attest.s.sol` → `script/AttestOne.s.sol` (contract `AttestOne`)
-- `Deploy.s.sol`: `setClaimAmount(0.01 ether)` + `fund{value: 0.1 ether}()`
-- `.env.example`: `SYBIL_AIRDROP` + correct AttestOne / attest.py split
-- README critical path rewritten for Varnie
+## Ownership map
+| Person | Edit here |
+|--------|-----------|
+| Murtuza | `data/` (CSV, seed patterns) |
+| Amin | `detector/`, `dashboard/` (React + viem) |
+| Varnie | `contract/`, `script/` |
 
-## Attest path cheat-sheet
-```bash
-forge script script/AttestOne.s.sol:AttestOne --rpc-url $MONAD_RPC --broadcast   # one wallet
-python3 script/attest.py                                                         # full dump
-```
+## Recent decisions
+- Use [viem](https://viem.sh/) for Monad testnet reads/writes from the dashboard
+- Do **not** treat static HTML as the long-term UI
+- Still keep hotspot + static fallback + backup video for venue risk
 
 ## Next steps
-1. Varnie: faucet → Deploy → AttestOne → sybil revert + human payout on explorer
-2. Amin: `set_registry.py` + full `attest.py` + dashboard R
-3. Murtuza: pitch open/close
-4. Stretch spawn-40 only if enforce is green
+1. Scaffold React+viem app under `dashboard/` (Amin)
+2. Wire registry address + `isSybil` / `verdict` probes via viem
+3. Varnie: Deploy → AttestOne → reject + human payout
+4. Merge open PRs / keep `main` in sync
 
-## Open questions
-- Who holds deploy key / has faucet MON?
+## Commands
+```bash
+python3 detector/detector.py
+cd dashboard && npm install && npm run dev
+```

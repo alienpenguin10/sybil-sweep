@@ -3,26 +3,51 @@
 Catch airdrop farms from on-chain fingerprints, show them as a red web, and **write the
 verdict onto Monad** so the next airdrop blocks them automatically.
 
-**Detect → show → enforce.**
+**Detect → show → enforce.** Stack: Python detector + Foundry contracts + **React / viem** dashboard.
 
-## Quick start (offline demo)
+## Team folders (work here to avoid conflicts)
+
+| Owner | Path | Owns |
+|-------|------|------|
+| **Murtuza** | [`data/`](data/) | `test_wallets.csv`, seed patterns, claimant realism |
+| **Amin** | [`detector/`](detector/), [`dashboard/`](dashboard/) | detection + React/viem UI + seam |
+| **Varnie** | [`contract/`](contract/), [`script/`](script/) | deploy, AttestOne, on-chain reject |
+
+```
+Murtuza sketch          →  Actual
+detector/detector.py    →  detector/detector.py
+dashboard/ (React)      →  dashboard/  (React + viem; legacy HTML kept as fallback)
+contract/*.sol          →  contract/SybilRegistry.sol + Airdrop.sol
+data/test_wallets.csv   →  data/test_wallets.csv
+```
+
+## Quick start
 
 ```bash
-./demo.sh             # Amin: detect + open projector dashboard + beat lines
-# or:
-python3 sybil_detector.py
-open dashboard.html   # zero CDN deps; works offline
+# 1) Detect (stdlib Python)
+python3 detector/detector.py              # reads data/test_wallets.csv by default
+python3 detector/detector.py --demo       # built-in synthetic set
+
+# 2) Dashboard (React + viem) — from dashboard/
+cd dashboard && npm install && npm run dev
+# Detector emits graph_data / attestations that the app loads.
+# viem talks to Monad testnet for isSybil / verdict / requireHuman proofs.
+
+# Legacy static fallback (no wallet):
+open dashboard/dashboard.html
 ```
+
+Or: `./demo.sh` (runs detector + opens the static fallback until the React app is the default).
 
 After deploy, wire the Amin seam:
 
 ```bash
 python3 script/set_registry.py 0xRegistry 0xAirdrop
 python3 script/attest.py          # full cluster dump (after AttestOne smoke)
-# dashboard → press R to probe isSybil on-chain
+# React dashboard: connect wallet / read registry via viem
 ```
 
-## Monad testnet
+## Monad testnet + viem
 
 | | |
 |--|--|
@@ -30,8 +55,25 @@ python3 script/attest.py          # full cluster dump (after AttestOne smoke)
 | RPC | `https://testnet-rpc.monad.xyz` |
 | Explorer | https://testnet.monadvision.com |
 | Faucet | https://faucet.monad.xyz |
+| Client lib | [viem](https://viem.sh/) |
 
 Verify live at [docs.monad.xyz](https://docs.monad.xyz/developer-essentials/testnet) if something fails.
+
+Example viem chain sketch (dashboard):
+
+```ts
+import { defineChain } from "viem";
+
+export const monadTestnet = defineChain({
+  id: 10143,
+  name: "Monad Testnet",
+  nativeCurrency: { name: "Monad", symbol: "MON", decimals: 18 },
+  rpcUrls: { default: { http: ["https://testnet-rpc.monad.xyz"] } },
+  blockExplorers: {
+    default: { name: "MonadVision", url: "https://testnet.monadvision.com" },
+  },
+});
+```
 
 ## On-chain critical path (Varnie)
 
@@ -52,14 +94,13 @@ forge script script/Deploy.s.sol:Deploy --rpc-url $MONAD_RPC --broadcast
 5. Set `MEMBER` / `CLUSTER_ID` / … in `.env`, then flag one wallet:
 
 ```bash
-# Single-wallet smoke (critical path) — contract name AttestOne in AttestOne.s.sol
 forge script script/AttestOne.s.sol:AttestOne --rpc-url $MONAD_RPC --broadcast
 ```
 
-6. Beat-4 contrast on explorer:
-   - Flagged wallet → `Airdrop.claim()` → **`SybilBlocked` revert** (works even if unfunded; we fund anyway for contrast)
+6. Beat-4 contrast on explorer (and in the React UI via viem):
+   - Flagged wallet → `Airdrop.claim()` → **`SybilBlocked` revert**
    - Honest wallet → `claim()` → **gets paid 0.01 MON**
-7. Full cluster dump (not the Solidity file):
+7. Full cluster dump:
 
 ```bash
 python3 script/attest.py
@@ -69,27 +110,20 @@ python3 script/attest.py
 
 | Goal | Command |
 |------|---------|
-| Flag one wallet (smoke / reject proof) | `forge script script/AttestOne.s.sol:AttestOne --broadcast` |
-| Publish all clusters from `attestations.json` | `python3 script/attest.py` |
+| Flag one wallet (smoke) | `forge script script/AttestOne.s.sol:AttestOne --broadcast` |
+| Publish all clusters | `python3 script/attest.py` |
 
 ## Layout
 
 ```
-sybil_detector.py       # stdlib detector → graph_data.js + attestations.json
-dashboard.html          # offline force graph + Enforce panel
-config.js               # registry/airdrop addresses for dashboard probe
-contracts/              # SybilRegistry + demo Airdrop
-script/
-  Deploy.s.sol          # deploy + fund 0.1 + setClaimAmount 0.01
-  AttestOne.s.sol       # single-wallet smoke (contract AttestOne)
-  attest.py             # full cluster dump
-  set_registry.py       # write addresses into config.js
-seed_patterns.md
-memory-bank/
+detector/detector.py     # stdlib detector
+dashboard/               # React + viem app (Amin); legacy dashboard.html fallback
+contract/                # SybilRegistry + Airdrop (Foundry src)
+data/test_wallets.csv    # Murtuza/Esa claimant list
+data/attestations.json   # detector output for attest.py
+script/                  # Foundry deploy / AttestOne / attest helpers
 ```
 
-## Team
-
-- **Varnie** — deploy, reject proof, AttestOne, then attest.py
-- **Murtuza** — hard cases + pitch
-- **Amin** — seam + projector demo
+## Demo risk note
+Venue wifi can still kill npm CDNs / RPC. Keep a phone hotspot, pre-`npm run build` static host,
+and the legacy `dashboard.html` + 30s backup video as safety nets. Enforce on explorer remains the differentiator if the UI flakes.

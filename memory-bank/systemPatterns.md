@@ -12,11 +12,14 @@ Detection engine (Python, stdlib only)
    • risk / confidence scoring
    • attestation per cluster (+ evidence hash)
         │
-        ├── attestations.json ──► script ──► SybilRegistry.attestCluster(...)
-        │                                         │
-        │                          Airdrop.claim() → requireHuman() → revert if sybil
+        ├── data/attestations.json ──► script ──► SybilRegistry.attestCluster(...)
+        │                                              │
+        │                               Airdrop.claim() → requireHuman() → revert if sybil
         │
-        └── graph_data.js ──► dashboard.html (offline force graph)
+        └── graph payload ──► dashboard/ (React + viem)
+                                 • force graph: red farms / blue humans
+                                 • viem publicClient: isSybil / verdict
+                                 • walletClient: optional live claim demo
 ```
 
 ## Detection linking rules
@@ -42,8 +45,9 @@ funder (or 0x0 if mixed), fundingWindowSecs, evidenceHash
 - `SybilRegistry` owner publishes via `attestCluster`
 - Threshold default 7000 bps (70%); `isSybil` iff confidence ≥ threshold
 - Airdrops: one line — `reg.requireHuman(msg.sender);`
+- React UI uses viem to read the same registry the airdrop enforces
 
 ## Design constraints
 - Detector: **no pip deps** unless strong reason
-- Dashboard: **zero external deps** (venue wifi is the #1 demo killer)
+- Dashboard: **React + viem** is the product UI; keep static HTML fallback for wifi failure
 - Prefer working on-chain reject over prettier graph

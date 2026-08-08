@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / "config.js"
+CONFIG = ROOT / "dashboard" / "config.js"
 
 
 def main() -> int:
@@ -28,8 +28,8 @@ def main() -> int:
     rpc = os.environ.get("MONAD_RPC", "https://testnet-rpc.monad.xyz")
     explorer = os.environ.get("MONAD_EXPLORER", "https://testnet.monadvision.com")
 
-    text = f"""// Sybil Sweep — local demo config (edit after Varnie deploys).
-// Loaded by dashboard.html. Keep offline-safe defaults.
+    text = f"""// Sybil Sweep — dashboard config (React/viem + legacy HTML).
+// Prefer env / Vite config in the React app; this file feeds the HTML fallback.
 window.SYBIL_CONFIG = {{
   chainId: 10143,
   chainName: "Monad Testnet",
