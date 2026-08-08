@@ -24,10 +24,14 @@ Not wallet visualization. Not agent-wallet firewalls.
 |--------|------|
 | **Varnie** | Chain: MetaMask, faucet, deploy registry, prove reject, attest script, stretch spawn-40 |
 | **Murtuza** | Data realism / hard cases, pattern spec, pitch open+close (fraud-ring credibility) |
-| **Amin** | Seam (detector → attestations → on-chain → dashboard readback), projector polish, demo choreography |
+| **Amin** | Seam + **React/viem dashboard** (graph + on-chain readback), demo choreography |
 
 ## Non-goals
 - Agent wallet / tx firewall products
-- Pitching as "we visualize wallets"
+- Pitching as "we visualize wallets" (enforce is the wedge; graph is evidence)
 - Over-polishing the dashboard at the expense of on-chain reject
 - 100% recall on synthetic data (looks faked; aim ~92–96% with hard cases)
+
+## UI stack decision
+- Primary: React + [viem](https://viem.sh/) under `dashboard/`
+- Fallback: static `dashboard/dashboard.html` for venue wifi failure

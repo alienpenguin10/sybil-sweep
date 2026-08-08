@@ -111,7 +111,8 @@ def main() -> int:
     print(f"Wrote {STATUS_PATH.name} ({len(published)} cluster(s))")
     if registry and not args.dry_run:
         print("Next: python3 script/set_registry.py", registry)
-        print("Then open dashboard.html and press R to probe.")
+        print("Then: cd dashboard && npm run dev  (viem reads registry)")
+        print("Fallback: open dashboard/dashboard.html and press R")
     return 0
 
 

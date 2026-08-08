@@ -1,30 +1,30 @@
 # Active Context — Sybil Sweep
 
 ## Current focus
-Repo aligned to **Murtuza folder layout** so the three of us edit different trees
-without merge conflicts. Working demo preserved (no React, no empty stubs).
+Docs + architecture updated: **dashboard is React + viem**. Legacy
+`dashboard/dashboard.html` remains a projector/wifi fallback only.
+Folder ownership still applies for conflict-free parallel work.
 
 ## Ownership map
 | Person | Edit here |
 |--------|-----------|
 | Murtuza | `data/` (CSV, seed patterns) |
-| Amin | `detector/`, `dashboard/` |
+| Amin | `detector/`, `dashboard/` (React + viem) |
 | Varnie | `contract/`, `script/` |
 
-## Recent changes
-- `contracts/` → `contract/` (Foundry `src = "contract"`)
-- Dashboard assets under `dashboard/`
-- Detector at `detector/detector.py` with `--csv` (default `data/test_wallets.csv`)
-- `data/test_wallets.csv` (Esa STEP 3) with farms + hard cases
+## Recent decisions
+- Use [viem](https://viem.sh/) for Monad testnet reads/writes from the dashboard
+- Do **not** treat static HTML as the long-term UI
+- Still keep hotspot + static fallback + backup video for venue risk
 
 ## Next steps
-1. Merge this PR
-2. Varnie: Deploy → AttestOne → reject + human payout
-3. Amin: set_registry + full attest.py + probe R
-4. Murtuza: tune CSV / pitch
+1. Scaffold React+viem app under `dashboard/` (Amin)
+2. Wire registry address + `isSybil` / `verdict` probes via viem
+3. Varnie: Deploy → AttestOne → reject + human payout
+4. Merge open PRs / keep `main` in sync
 
 ## Commands
 ```bash
 python3 detector/detector.py
-open dashboard/dashboard.html
+cd dashboard && npm install && npm run dev
 ```

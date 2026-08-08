@@ -10,17 +10,18 @@ identical amounts/gas, fan-in to a collector). Murtuza's ~8 years fraud/risk at 
 the team's unique credibility asset.
 
 ## How it should work
-1. Load claimant events (demo synthetic or Monad logs)
+1. Load claimant events (CSV / demo / Monad logs)
 2. Off-chain detector links wallets (shared funder, funding burst + amount/gas) and clusters via union-find
-3. Score clusters; emit attestations + graph data
+3. Score clusters; emit attestations + graph payload
 4. Publish attestations to `SybilRegistry` on Monad testnet
-5. Token airdrops call `reg.requireHuman(msg.sender)` — flagged wallets revert
+5. **React + viem** dashboard shows the red farm graph and reads on-chain verdicts
+6. Token airdrops call `reg.requireHuman(msg.sender)` — flagged wallets revert
 
 ## UX goals (demo ~90s)
 1. Name the problem (~15s) — Murtuza
 2. Load claimants; say count out loud (~15s) — Amin
-3. Red rings / blue honest; point at recall (~20s) — Amin
-4. Explorer: attested + live `claim()` revert (~20s) — Varnie
+3. Red rings / blue honest in React UI; point at recall (~20s) — Amin
+4. Explorer + viem: attested + live `claim()` revert (~20s) — Varnie / Amin
 5. Close: behaviour-based, every farm before a token moves (~20s) — Murtuza
 
 ## Pitch one-liner

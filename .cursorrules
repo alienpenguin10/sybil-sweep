@@ -15,7 +15,8 @@ Enforce on-chain. Graph is evidence. Do not pitch as wallet viz or agent firewal
 
 ## Code laws
 - Detector: Python stdlib only (no pip) unless team explicitly agrees
-- Dashboard: zero CDN / external deps (offline-safe for venue wifi)
+- Dashboard: **React + viem** (https://viem.sh/) for Monad reads (`isSybil`, `verdict`, claim UX)
+- Legacy `dashboard/dashboard.html` is a fallback only (venue wifi / projector emergency)
 - clusterId 0 reserved on-chain → attestations 1-indexed
 - Dashboard uses cluster == -1 for honest/unclustered
 - evidenceHash is SHA-256 of sorted members+funder+window; contract stores only
@@ -26,12 +27,12 @@ Enforce on-chain. Graph is evidence. Do not pitch as wallet viz or agent firewal
 - RPC https://testnet-rpc.monad.xyz
 - explorer https://testnet.monadvision.com
 - faucet https://faucet.monad.xyz
+- Client: viem `defineChain` / `createPublicClient` / `createWalletClient`
 
 ## Team folders (avoid conflicts)
 - Murtuza → `data/`
-- Amin → `detector/`, `dashboard/`
+- Amin → `detector/`, `dashboard/` (React + viem)
 - Varnie → `contract/`, `script/`
-- No React/viem for projector — offline `dashboard/dashboard.html` only
 - Foundry `src = "contract"` (singular, matches Murtuza sketch)
 
 ## Memory Bank
