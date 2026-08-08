@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write deployed addresses into config.js (Amin seam).
+"""Write deployed addresses into Vite .env + HTML fallback config (Amin seam).
 
 Usage:
   SYBIL_REGISTRY=0x... SYBIL_AIRDROP=0x... python3 script/set_registry.py
@@ -10,12 +10,13 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / "dashboard" / "config.js"
+DASH = ROOT / "dashboard"
+PUBLIC_CONFIG = DASH / "public" / "config.js"
+VITE_ENV = DASH / ".env"
 
 
 def main() -> int:
@@ -27,11 +28,14 @@ def main() -> int:
 
     rpc = os.environ.get("MONAD_RPC", "https://testnet-rpc.monad.xyz")
     explorer = os.environ.get("MONAD_EXPLORER", "https://testnet.monadvision.com")
+    chain_id = os.environ.get("CHAIN_ID", "10143")
 
-    text = f"""// Sybil Sweep — dashboard config (React/viem + legacy HTML).
-// Prefer env / Vite config in the React app; this file feeds the HTML fallback.
+    DASH.mkdir(parents=True, exist_ok=True)
+    (DASH / "public").mkdir(parents=True, exist_ok=True)
+
+    js = f"""// Sybil Sweep — HTML fallback config (React uses dashboard/.env via Vite).
 window.SYBIL_CONFIG = {{
-  chainId: 10143,
+  chainId: {int(chain_id)},
   chainName: "Monad Testnet",
   rpcUrl: {json.dumps(rpc)},
   explorerUrl: {json.dumps(explorer)},
@@ -40,11 +44,22 @@ window.SYBIL_CONFIG = {{
   forceOffline: false,
 }};
 """
-    CONFIG.write_text(text, encoding="utf-8")
-    print(f"Updated {CONFIG.name}")
+    PUBLIC_CONFIG.write_text(js, encoding="utf-8")
+
+    vite = f"""VITE_CHAIN_ID={chain_id}
+VITE_MONAD_RPC={rpc}
+VITE_EXPLORER_URL={explorer}
+VITE_SYBIL_REGISTRY={registry}
+VITE_SYBIL_AIRDROP={airdrop}
+"""
+    VITE_ENV.write_text(vite, encoding="utf-8")
+
+    print(f"Updated {PUBLIC_CONFIG.relative_to(ROOT)}")
+    print(f"Updated {VITE_ENV.relative_to(ROOT)}")
     print(f"  registry: {registry}")
     if airdrop:
         print(f"  airdrop:  {airdrop}")
+    print("Restart `npm run dev` if the Vite server is already running.")
     return 0
 
 

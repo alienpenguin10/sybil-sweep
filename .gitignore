@@ -13,6 +13,12 @@ lib/
 data/onchain_status.json
 onchain_status.json
 
+# Dashboard (React / Vite)
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.env
+dashboard/.env.local
+
 # OS / editor
 .DS_Store
 .idea/

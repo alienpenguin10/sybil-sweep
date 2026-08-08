@@ -517,7 +517,8 @@ def detect(events: List[ClaimEvent]) -> dict:
 
 
 def write_outputs(result: dict) -> None:
-    DASHBOARD_DIR.mkdir(parents=True, exist_ok=True)
+    public_dir = DASHBOARD_DIR / "public"
+    public_dir.mkdir(parents=True, exist_ok=True)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     graph = {
@@ -527,7 +528,12 @@ def write_outputs(result: dict) -> None:
         "nodes": result["nodes"],
         "links": result["links"],
     }
-    js_path = DASHBOARD_DIR / "graph_data.js"
+
+    # React (Vite) fetches JSON; legacy HTML fallback still uses window.SYBIL_GRAPH
+    json_path = public_dir / "graph_data.json"
+    json_path.write_text(json.dumps(graph, indent=2) + "\n", encoding="utf-8")
+
+    js_path = public_dir / "graph_data.js"
     js_path.write_text(
         "window.SYBIL_GRAPH = " + json.dumps(graph, indent=2) + ";\n",
         encoding="utf-8",
@@ -546,7 +552,10 @@ def write_outputs(result: dict) -> None:
         + "\n",
         encoding="utf-8",
     )
-    print(f"Wrote {js_path.relative_to(ROOT)} and {att_path.relative_to(ROOT)}")
+    print(
+        f"Wrote {json_path.relative_to(ROOT)}, {js_path.relative_to(ROOT)}, "
+        f"and {att_path.relative_to(ROOT)}"
+    )
 
 
 def main(argv: Optional[List[str]] = None) -> None:
