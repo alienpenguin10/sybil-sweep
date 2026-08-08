@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 import {Script, console2} from "forge-std/Script.sol";
-import {SybilRegistry} from "../contracts/SybilRegistry.sol";
+import {SybilRegistry} from "../contract/SybilRegistry.sol";
 
 /// @notice Critical-path smoke: tag ONE wallet so Airdrop.claim() reverts via requireHuman.
 /// @dev Full cluster dump is NOT here — use `python3 script/attest.py` after reject is proven.

@@ -27,10 +27,12 @@ Enforce on-chain. Graph is evidence. Do not pitch as wallet viz or agent firewal
 - explorer https://testnet.monadvision.com
 - faucet https://faucet.monad.xyz
 
-## Roles
-- Varnie: chain deploy / reject proof / attest broadcast
-- Murtuza: hard cases + pitch
-- Amin: seam + dashboard projector + demo choreography
+## Team folders (avoid conflicts)
+- Murtuza → `data/`
+- Amin → `detector/`, `dashboard/`
+- Varnie → `contract/`, `script/`
+- No React/viem for projector — offline `dashboard/dashboard.html` only
+- Foundry `src = "contract"` (singular, matches Murtuza sketch)
 
 ## Memory Bank
 Read memory-bank/* at task start. Update activeContext.md + progress.md after significant work.

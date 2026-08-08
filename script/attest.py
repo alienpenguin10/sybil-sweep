@@ -19,8 +19,8 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ATT_PATH = ROOT / "attestations.json"
-STATUS_PATH = ROOT / "onchain_status.json"
+ATT_PATH = ROOT / "data" / "attestations.json"
+STATUS_PATH = ROOT / "data" / "onchain_status.json"
 
 
 def load_dotenv() -> None:

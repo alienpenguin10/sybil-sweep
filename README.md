@@ -3,15 +3,36 @@
 Catch airdrop farms from on-chain fingerprints, show them as a red web, and **write the
 verdict onto Monad** so the next airdrop blocks them automatically.
 
-**Detect → show → enforce.**
+**Detect → show → enforce.** No viem/React — offline HTML + Foundry (venue wifi safe).
+
+## Team folders (work here to avoid conflicts)
+
+| Owner | Path | Owns |
+|-------|------|------|
+| **Murtuza** | [`data/`](data/) | `test_wallets.csv`, seed patterns, claimant realism |
+| **Amin** | [`detector/`](detector/), [`dashboard/`](dashboard/) | detection + projector demo + seam |
+| **Varnie** | [`contract/`](contract/), [`script/`](script/) | deploy, AttestOne, on-chain reject |
+
+```
+Murtuza sketch          →  Actual (working)
+detector/detector.py    →  detector/detector.py
+dashboard/ (React)      →  dashboard/dashboard.html (offline, not React)
+contract/*.sol          →  contract/SybilRegistry.sol + Airdrop.sol
+data/test_wallets.csv   →  data/test_wallets.csv
+```
 
 ## Quick start (offline demo)
 
 ```bash
-./demo.sh             # Amin: detect + open projector dashboard + beat lines
+./demo.sh
 # or:
-python3 sybil_detector.py
-open dashboard.html   # zero CDN deps; works offline
+python3 detector/detector.py              # reads data/test_wallets.csv by default
+open dashboard/dashboard.html
+```
+
+```bash
+python3 detector/detector.py --demo       # built-in synthetic set
+python3 detector/detector.py --csv data/test_wallets.csv
 ```
 
 After deploy, wire the Amin seam:
@@ -19,7 +40,7 @@ After deploy, wire the Amin seam:
 ```bash
 python3 script/set_registry.py 0xRegistry 0xAirdrop
 python3 script/attest.py          # full cluster dump (after AttestOne smoke)
-# dashboard → press R to probe isSybil on-chain
+# open dashboard/dashboard.html → press R to probe isSybil
 ```
 
 ## Monad testnet
@@ -52,14 +73,13 @@ forge script script/Deploy.s.sol:Deploy --rpc-url $MONAD_RPC --broadcast
 5. Set `MEMBER` / `CLUSTER_ID` / … in `.env`, then flag one wallet:
 
 ```bash
-# Single-wallet smoke (critical path) — contract name AttestOne in AttestOne.s.sol
 forge script script/AttestOne.s.sol:AttestOne --rpc-url $MONAD_RPC --broadcast
 ```
 
 6. Beat-4 contrast on explorer:
-   - Flagged wallet → `Airdrop.claim()` → **`SybilBlocked` revert** (works even if unfunded; we fund anyway for contrast)
+   - Flagged wallet → `Airdrop.claim()` → **`SybilBlocked` revert**
    - Honest wallet → `claim()` → **gets paid 0.01 MON**
-7. Full cluster dump (not the Solidity file):
+7. Full cluster dump:
 
 ```bash
 python3 script/attest.py
@@ -69,27 +89,16 @@ python3 script/attest.py
 
 | Goal | Command |
 |------|---------|
-| Flag one wallet (smoke / reject proof) | `forge script script/AttestOne.s.sol:AttestOne --broadcast` |
-| Publish all clusters from `attestations.json` | `python3 script/attest.py` |
+| Flag one wallet (smoke) | `forge script script/AttestOne.s.sol:AttestOne --broadcast` |
+| Publish all clusters | `python3 script/attest.py` |
 
 ## Layout
 
 ```
-sybil_detector.py       # stdlib detector → graph_data.js + attestations.json
-dashboard.html          # offline force graph + Enforce panel
-config.js               # registry/airdrop addresses for dashboard probe
-contracts/              # SybilRegistry + demo Airdrop
-script/
-  Deploy.s.sol          # deploy + fund 0.1 + setClaimAmount 0.01
-  AttestOne.s.sol       # single-wallet smoke (contract AttestOne)
-  attest.py             # full cluster dump
-  set_registry.py       # write addresses into config.js
-seed_patterns.md
-memory-bank/
+detector/detector.py     # stdlib detector
+dashboard/               # offline force graph + config.js
+contract/                # SybilRegistry + Airdrop (Foundry src)
+data/test_wallets.csv    # Murtuza/Esa claimant list
+data/attestations.json   # detector output for attest.py
+script/                  # Foundry deploy / AttestOne / attest helpers
 ```
-
-## Team
-
-- **Varnie** — deploy, reject proof, AttestOne, then attest.py
-- **Murtuza** — hard cases + pitch
-- **Amin** — seam + projector demo

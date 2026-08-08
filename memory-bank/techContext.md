@@ -26,23 +26,21 @@ Do not hardcode without checking docs — values have changed before.
 
 ## Key files
 ```
-sybil_detector.py      # detect + emit graph_data.js + attestations.json
-contracts/
-  SybilRegistry.sol    # attestation registry
-  Airdrop.sol          # demo claim() with requireHuman
-script/                # Foundry deploy + attest
-dashboard.html         # offline viz
-graph_data.js          # generated
-attestations.json      # generated
-seed_patterns.md       # fraud signatures + hard cases
+detector/detector.py       # detect + emit dashboard/graph_data.js + data/attestations.json
+contract/
+  SybilRegistry.sol
+  Airdrop.sol
+dashboard/dashboard.html   # offline viz
+data/test_wallets.csv      # Murtuza claimant list
+script/                    # Foundry deploy + AttestOne + attest.py
 ```
 
 ## Commands
 ```bash
-python3 sybil_detector.py          # regenerate graph + attestations
-# open dashboard.html in browser
-forge script script/Deploy.s.sol --rpc-url $MONAD_RPC --broadcast
-forge script script/Attest.s.sol --rpc-url $MONAD_RPC --broadcast
+python3 detector/detector.py
+python3 detector/detector.py --csv data/test_wallets.csv
+open dashboard/dashboard.html
+forge script script/Deploy.s.sol:Deploy --rpc-url $MONAD_RPC --broadcast
 ```
 
 ## Env

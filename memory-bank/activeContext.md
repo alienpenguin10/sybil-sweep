@@ -1,26 +1,30 @@
 # Active Context — Sybil Sweep
 
 ## Current focus
-**Varnie critical path is documented and de-snagged.** Deploy funds airdrop + sets
-0.01 claim; AttestOne file/contract names align; forge-std clone called out.
+Repo aligned to **Murtuza folder layout** so the three of us edit different trees
+without merge conflicts. Working demo preserved (no React, no empty stubs).
+
+## Ownership map
+| Person | Edit here |
+|--------|-----------|
+| Murtuza | `data/` (CSV, seed patterns) |
+| Amin | `detector/`, `dashboard/` |
+| Varnie | `contract/`, `script/` |
 
 ## Recent changes
-- Renamed `script/Attest.s.sol` → `script/AttestOne.s.sol` (contract `AttestOne`)
-- `Deploy.s.sol`: `setClaimAmount(0.01 ether)` + `fund{value: 0.1 ether}()`
-- `.env.example`: `SYBIL_AIRDROP` + correct AttestOne / attest.py split
-- README critical path rewritten for Varnie
-
-## Attest path cheat-sheet
-```bash
-forge script script/AttestOne.s.sol:AttestOne --rpc-url $MONAD_RPC --broadcast   # one wallet
-python3 script/attest.py                                                         # full dump
-```
+- `contracts/` → `contract/` (Foundry `src = "contract"`)
+- Dashboard assets under `dashboard/`
+- Detector at `detector/detector.py` with `--csv` (default `data/test_wallets.csv`)
+- `data/test_wallets.csv` (Esa STEP 3) with farms + hard cases
 
 ## Next steps
-1. Varnie: faucet → Deploy → AttestOne → sybil revert + human payout on explorer
-2. Amin: `set_registry.py` + full `attest.py` + dashboard R
-3. Murtuza: pitch open/close
-4. Stretch spawn-40 only if enforce is green
+1. Merge this PR
+2. Varnie: Deploy → AttestOne → reject + human payout
+3. Amin: set_registry + full attest.py + probe R
+4. Murtuza: tune CSV / pitch
 
-## Open questions
-- Who holds deploy key / has faucet MON?
+## Commands
+```bash
+python3 detector/detector.py
+open dashboard/dashboard.html
+```

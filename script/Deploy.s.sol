@@ -2,8 +2,8 @@
 pragma solidity ^0.8.24;
 
 import {Script, console2} from "forge-std/Script.sol";
-import {SybilRegistry} from "../contracts/SybilRegistry.sol";
-import {Airdrop} from "../contracts/Airdrop.sol";
+import {SybilRegistry} from "../contract/SybilRegistry.sol";
+import {Airdrop} from "../contract/Airdrop.sol";
 
 /// @notice Deploy SybilRegistry + demo Airdrop, set claim to 0.01 MON, fund 0.1 MON.
 /// @dev Deployer needs ≥0.1 MON (+ gas). Beat-4 contrast: sybil reverts, human gets paid.
