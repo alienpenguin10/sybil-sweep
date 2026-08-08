@@ -1,0 +1,32 @@
+# Sybil Sweep — project intelligence
+
+## Wedge (never forget)
+Enforce on-chain. Graph is evidence. Do not pitch as wallet viz or agent firewall.
+
+## Critical path order
+1. Deploy SybilRegistry + Airdrop → reject one hardcoded wallet
+2. attestations.json → attestCluster for real clusters
+3. Stretch spawn-40 only if #1–2 solid by ~5pm
+
+## Code laws
+- Detector: Python stdlib only (no pip) unless team explicitly agrees
+- Dashboard: zero CDN / external deps (offline-safe for venue wifi)
+- clusterId 0 reserved on-chain → attestations 1-indexed
+- Dashboard uses cluster == -1 for honest/unclustered
+- evidenceHash is SHA-256 of sorted members+funder+window; contract stores only
+- Demo recall should show judgment (~92–96%), not perfect 100%
+
+## Monad testnet (re-verify if flaky)
+- chainId 10143
+- RPC https://testnet-rpc.monad.xyz
+- explorer https://testnet.monadvision.com
+- faucet https://faucet.monad.xyz
+
+## Roles
+- Varnie: chain deploy / reject proof / attest broadcast
+- Murtuza: hard cases + pitch
+- Amin: seam + dashboard projector + demo choreography
+
+## Memory Bank
+Read memory-bank/* at task start. Update activeContext.md + progress.md after significant work.
+When user says "update memory bank", review ALL memory-bank files.

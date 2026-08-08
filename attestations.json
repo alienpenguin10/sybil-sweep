@@ -1,0 +1,66 @@
+{
+  "generatedAt": 1786194482,
+  "thresholdBpsDefault": 7000,
+  "attestations": [
+    {
+      "clusterId": 1,
+      "members": [
+        "0x00005bcdbea82c9dad7f140fec66bd9fb0e80de5",
+        "0x04171eb6c39a4a31ae7e191ba456547a9bbc1af5",
+        "0x0b7deb4175eb31d24716ea7dab97f8994ef06afb",
+        "0x0e074fea38f60ae450d74b6285523aaa833402e0",
+        "0x0f4a5108d9c68a62957ca42c58977bb6d9098a93",
+        "0x1e7a5ba321fe4aa8161fa4fd275c518c17ec2cba",
+        "0x2263fd49780deb1ebc18410f56b9edb41d1ae59e",
+        "0x261c7d0a4139ea75826fb389dbbc50d91a615c77",
+        "0x267535e9404a725c4193849a0db32218619cfb83",
+        "0x40d7660325230fce4420881d4192ea06f674824c",
+        "0x49ce609fd2a8748e4a7cc5f10f2dd00b8f3c8eb8",
+        "0x52c35156371f7371f25ad4b02144e6d32bac815a",
+        "0x5d6c0ade51a5bd95ba65d0ec97319e57c74ca56b",
+        "0x6ddc599fe1e4bb8e169f7b6d019f7669adf1cfdf",
+        "0x6e50acab54a4cec75e3a974a4914329a17b50316",
+        "0x780d2baa21ed6dc42ca9926ea4983ff28b6465f2",
+        "0x7be4d116f36af6c77ffb120add92643132713a26",
+        "0x8ca92d9b185afc494c68c639598ceb5a16dc5209",
+        "0x99cb3a10d789faedc6553f464118b845ae43be70",
+        "0xa1c3e3fea4bdc2791c9bd18854bac74d18ccde08",
+        "0xa8d93ecd5b49cf3a87261a148deb22794021004d",
+        "0xa949d24937988ebfa2345e8d18d7765edc2dfb23",
+        "0xab96a25ae96cd6cb50d861a91a6cf85bc45d3cb9",
+        "0xb02afe16c077687c00c59369f265f1514c5bb3f4",
+        "0xb8f707b67d33694200cbc62d298e2980d818a965",
+        "0xcb300df62c389c729ed59033f9ee585d525b58dd",
+        "0xd5d3486a952de5ee5c55161e56c7e967aa600d7e",
+        "0xe8446cd306e75b8ff22e1dce400a6cbd5439e8b9"
+      ],
+      "size": 28,
+      "confidenceBps": 10000,
+      "funder": "0xa528f53936e975133dc2757476f5d212bdb904ca",
+      "fundingWindowSecs": 45,
+      "evidenceHash": "0x69c7e45a8f5c8b4613877129883b0956e5004c79f152cc8a0b0fb5b95d6d40ac"
+    },
+    {
+      "clusterId": 2,
+      "members": [
+        "0x0cd09f36ea5eeeecc967eeb20ef4177bdb2f2215",
+        "0x12168db3797cd401e62e654ede6fbd9ba7bbad86",
+        "0x2400504b0d644140da793e5aafe16582ce073088",
+        "0x2465fe7cff96b3b7208b2d5d7a9f717683152194",
+        "0x296855542a33ef54af6b7522e0b90f2f1f0f67a8",
+        "0x52d9156a6428ab24740ee3ee54ff33bcfc1c7801",
+        "0x6a584cdf7c1197597af06ec6f401908153a90ede",
+        "0xa17bf394f7598e1c02c5fb8a5782eabba014d8fc",
+        "0xae0ae3908a8811b6e1cd134e1b1082c1c74764e3",
+        "0xca4bef25fa1c4e42d16bc192a2d7672117f5e639",
+        "0xdb4c8ef65fd6633adda3581a1cd3a014146f1f29",
+        "0xfe98b826297a5423789cac5bb47540f6fae4a88a"
+      ],
+      "size": 12,
+      "confidenceBps": 9000,
+      "funder": "0x0000000000000000000000000000000000000000",
+      "fundingWindowSecs": 26,
+      "evidenceHash": "0xb9508648abc9ff18f507cd8aa9a12d6fe0f0a6b58484f380eda3711afc95c781"
+    }
+  ]
+}
