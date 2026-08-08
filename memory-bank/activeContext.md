@@ -1,9 +1,8 @@
 # Active Context — Sybil Sweep
 
 ## Current focus
-Docs + architecture updated: **dashboard is React + viem**. Legacy
-`dashboard/dashboard.html` remains a projector/wifi fallback only.
-Folder ownership still applies for conflict-free parallel work.
+**React + viem dashboard is live locally.** Open http://localhost:5173  
+Legacy HTML: `dashboard/public/fallback.html`
 
 ## Ownership map
 | Person | Edit here |
@@ -12,19 +11,20 @@ Folder ownership still applies for conflict-free parallel work.
 | Amin | `detector/`, `dashboard/` (React + viem) |
 | Varnie | `contract/`, `script/` |
 
-## Recent decisions
-- Use [viem](https://viem.sh/) for Monad testnet reads/writes from the dashboard
-- Do **not** treat static HTML as the long-term UI
-- Still keep hotspot + static fallback + backup video for venue risk
+## Recent changes
+- Vite React+TS+viem app: force graph, Enforce panel, viem `isSybil` probe
+- Detector writes `dashboard/public/graph_data.json` (+ `.js` for fallback)
+- `set_registry.py` writes `dashboard/.env` + `public/config.js`
+- `./demo.sh` starts `npm run dev`
+- Production build verified (`npm run build`)
 
 ## Next steps
-1. Scaffold React+viem app under `dashboard/` (Amin)
-2. Wire registry address + `isSybil` / `verdict` probes via viem
-3. Varnie: Deploy → AttestOne → reject + human payout
-4. Merge open PRs / keep `main` in sync
+1. Varnie deploy → `python3 script/set_registry.py 0xReg 0xDrop`
+2. Restart Vite → key **R** to re-probe
+3. Commit/push React scaffold when ready
 
 ## Commands
 ```bash
 python3 detector/detector.py
-cd dashboard && npm install && npm run dev
+cd dashboard && npm run dev
 ```

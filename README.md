@@ -21,6 +21,25 @@ contract/*.sol          →  contract/SybilRegistry.sol + Airdrop.sol
 data/test_wallets.csv   →  data/test_wallets.csv
 ```
 
+## Public demo (everyone)
+
+After GitHub Pages is enabled on the repo:
+
+**https://alienpenguin10.github.io/sybil-sweep/**
+
+```bash
+# one-time on GitHub: Settings → Pages → Source = GitHub Actions
+# then push this branch / merge to main (workflow auto-deploys)
+```
+
+Or deploy the `dashboard/` folder to Vercel (drag-drop or CLI):
+
+```bash
+cd dashboard && npx vercel --prod
+```
+
+**Note:** hosting the website ≠ deploying contracts. Contracts still go to **Monad testnet** via Foundry (`Deploy.s.sol`). The public site shows the graph; Enforce goes live after you set `VITE_SYBIL_REGISTRY`.
+
 ## Quick start
 
 ```bash
@@ -28,16 +47,16 @@ data/test_wallets.csv   →  data/test_wallets.csv
 python3 detector/detector.py              # reads data/test_wallets.csv by default
 python3 detector/detector.py --demo       # built-in synthetic set
 
-# 2) Dashboard (React + viem) — from dashboard/
-cd dashboard && npm install && npm run dev
-# Detector emits graph_data / attestations that the app loads.
-# viem talks to Monad testnet for isSybil / verdict / requireHuman proofs.
-
-# Legacy static fallback (no wallet):
-open dashboard/dashboard.html
+# 2) Dashboard (React + viem)
+cd dashboard
+cp -n .env.example .env                   # set VITE_SYBIL_REGISTRY after deploy
+npm install
+npm run dev                               # http://localhost:5173
 ```
 
-Or: `./demo.sh` (runs detector + opens the static fallback until the React app is the default).
+Or `./demo.sh` (runs detector, then `npm run dev`).
+
+Legacy static fallback: `dashboard/public/fallback.html` (also linked from the React UI).
 
 After deploy, wire the Amin seam:
 

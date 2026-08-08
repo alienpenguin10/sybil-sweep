@@ -1,5 +1,5 @@
-window.SYBIL_GRAPH = {
-  "generatedAt": 1786195845,
+{
+  "generatedAt": 1786196863,
   "metrics": {
     "claimants": 61,
     "farms_truth": 36,
@@ -2248,4 +2248,4 @@ window.SYBIL_GRAPH = {
       "kind": "burst_amount_gas"
     }
   ]
-};
+}
