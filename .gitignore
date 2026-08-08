@@ -18,6 +18,7 @@ dashboard/node_modules/
 dashboard/dist/
 dashboard/.env
 dashboard/.env.local
+dashboard/.vite/
 
 # OS / editor
 .DS_Store
