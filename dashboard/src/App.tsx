@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address } from "viem";
 import { ForceGraph } from "./components/ForceGraph";
-import { getAirdropAddress, getRegistryAddress } from "./lib/chain";
+import { getAirdropAddress, getProbeWalletFallback, getRegistryAddress } from "./lib/chain";
 import { explorerAddressUrl, probeWallet } from "./lib/registry";
 import type { GraphPayload } from "./lib/types";
 
@@ -38,6 +38,9 @@ export default function App() {
   }, []);
 
   const probeWalletAddr = useMemo(() => {
+    // Prefer the live claim()-reject wallet so Enforce matches Varnie's explorer proof.
+    const live = getProbeWalletFallback();
+    if (live) return live;
     if (!data?.clusters?.length) return null;
     const sample = data.clusters[0].sampleMember;
     if (sample?.startsWith("0x")) return sample as Address;

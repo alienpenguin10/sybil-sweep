@@ -43,10 +43,11 @@ jobs:
         env:
           GITHUB_PAGES: "true"
           VITE_CHAIN_ID: "10143"
-          VITE_MONAD_RPC: "https://testnet-rpc.monad.xyz"
+          VITE_MONAD_RPC: "https://10143.rpc.thirdweb.com"
           VITE_EXPLORER_URL: "https://testnet.monadvision.com"
-          VITE_SYBIL_REGISTRY: ${{ vars.VITE_SYBIL_REGISTRY }}
-          VITE_SYBIL_AIRDROP: ${{ vars.VITE_SYBIL_AIRDROP }}
+          VITE_SYBIL_REGISTRY: "0x1D582E8d297d47273B64B80BD93c159513FD97D9"
+          VITE_SYBIL_AIRDROP: "0x290fbF9fb7e06dF88A8C14546939db476888d9C4"
+          VITE_PROBE_WALLET: "0xd8A08DF92652fF3992545D40DeDEe0FDA31f8871"
         run: |
           npm ci
           npm run build

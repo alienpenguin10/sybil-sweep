@@ -1,10 +1,10 @@
-import { createPublicClient, http, type Address } from "viem";
+import { createPublicClient, type Address } from "viem";
 import { sybilRegistryAbi } from "./abi";
-import { getRegistryAddress, monadTestnet } from "./chain";
+import { getRegistryAddress, monadTestnet, monadTransport } from "./chain";
 
 const client = createPublicClient({
   chain: monadTestnet,
-  transport: http(),
+  transport: monadTransport,
 });
 
 export type ProbeResult = {
