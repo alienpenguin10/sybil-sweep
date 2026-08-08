@@ -21,6 +21,25 @@ contract/*.sol          →  contract/SybilRegistry.sol + Airdrop.sol
 data/test_wallets.csv   →  data/test_wallets.csv
 ```
 
+## Public demo (everyone)
+
+After GitHub Pages is enabled on the repo:
+
+**https://alienpenguin10.github.io/sybil-sweep/**
+
+```bash
+# one-time on GitHub: Settings → Pages → Source = GitHub Actions
+# then push this branch / merge to main (workflow auto-deploys)
+```
+
+Or deploy the `dashboard/` folder to Vercel (drag-drop or CLI):
+
+```bash
+cd dashboard && npx vercel --prod
+```
+
+**Note:** hosting the website ≠ deploying contracts. Contracts still go to **Monad testnet** via Foundry (`Deploy.s.sol`). The public site shows the graph; Enforce goes live after you set `VITE_SYBIL_REGISTRY`.
+
 ## Quick start
 
 ```bash
